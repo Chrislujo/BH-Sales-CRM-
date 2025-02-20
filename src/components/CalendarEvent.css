@@ -1,0 +1,36 @@
+.calendar-event {
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin: 2px 0;
+  font-size: 12px;
+  cursor: move;
+  background: #e1f5fe;
+  user-select: none;
+}
+
+.calendar-event.dragging {
+  opacity: 0.5;
+}
+
+.calendar-event.meeting {
+  background: #e1f5fe;
+}
+
+.calendar-event.call {
+  background: #fff3cd;
+}
+
+.calendar-event.appointment {
+  background: #d4edda;
+}
+
+.event-time {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.event-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

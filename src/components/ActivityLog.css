@@ -1,0 +1,130 @@
+.activity-log {
+  margin-top: 20px;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.activity-header h3 {
+  margin: 0;
+  color: #2d3e50;
+}
+
+.add-activity-btn {
+  background: #00a4bd;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.activity-form {
+  background: #f5f8fa;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.form-row select,
+.form-row input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.activity-form textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-height: 80px;
+  margin-bottom: 10px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.form-actions button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-actions button[type="button"] {
+  background: white;
+  border: 1px solid #ddd;
+}
+
+.form-actions button[type="submit"] {
+  background: #00a4bd;
+  color: white;
+  border: none;
+}
+
+.activity-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.activity-item {
+  display: flex;
+  gap: 15px;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.activity-icon {
+  font-size: 20px;
+  width: 30px;
+  text-align: center;
+}
+
+.activity-content {
+  flex: 1;
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.activity-type {
+  font-weight: 500;
+  color: #2d3e50;
+}
+
+.activity-time {
+  color: #666;
+  font-size: 12px;
+}
+
+.activity-description {
+  margin: 0;
+  color: #4a4a4a;
+  font-size: 14px;
+}
+
+.no-activities {
+  text-align: center;
+  color: #666;
+  padding: 20px 0;
+}

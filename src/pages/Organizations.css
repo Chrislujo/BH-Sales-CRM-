@@ -1,0 +1,171 @@
+.organizations-page {
+  padding: 20px;
+}
+
+.organizations-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.organizations-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.org-count {
+  color: #666;
+  font-size: 14px;
+}
+
+.create-org-btn {
+  background: #00a4bd;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.organizations-container {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 20px;
+  height: calc(100vh - 160px);
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.organizations-list {
+  border-right: 1px solid #eee;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.organizations-list-header {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.search-filter-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.org-search {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.org-filter {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.organizations-list-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.org-list-item {
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.org-list-item:hover {
+  background: #f5f8fa;
+}
+
+.org-list-item.selected {
+  background: #e1f5fe;
+}
+
+.org-list-info h3 {
+  margin: 0 0 5px 0;
+  color: #2d3e50;
+}
+
+.org-type {
+  font-size: 12px;
+  color: #666;
+  background: #f0f0f0;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.org-list-details {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}
+
+.organization-details {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.org-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.edit-org-btn {
+  padding: 8px 16px;
+  background: #f5f8fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.org-info-section,
+.org-address-section,
+.org-contacts-section {
+  background: #f5f8fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.info-item label {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.info-item p {
+  margin: 0;
+  color: #2d3e50;
+}
+
+.no-org-selected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+}
+
+.no-data {
+  text-align: center;
+  color: #666;
+  padding: 20px;
+}

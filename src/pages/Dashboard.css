@@ -1,0 +1,131 @@
+.dashboard {
+  padding: 20px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card h3 {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: bold;
+  color: #2d3e50;
+  margin: 10px 0;
+}
+
+.stat-subtitle {
+  font-size: 12px;
+  color: #666;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.dashboard-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #2d3e50;
+}
+
+.view-all {
+  color: #00a4bd;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.dashboard-task-item,
+.dashboard-activity-item {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.dashboard-task-item:last-child,
+.dashboard-activity-item:last-child {
+  border-bottom: none;
+}
+
+.task-info h4 {
+  margin: 0 0 5px 0;
+  color: #2d3e50;
+}
+
+.task-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.task-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.due-date {
+  font-size: 12px;
+  color: #666;
+}
+
+.dashboard-activity-item {
+  display: flex;
+  gap: 15px;
+}
+
+.activity-icon {
+  font-size: 20px;
+}
+
+.activity-info {
+  flex: 1;
+}
+
+.activity-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #2d3e50;
+}
+
+.activity-time {
+  font-size: 12px;
+  color: #666;
+}
+
+.no-data {
+  text-align: center;
+  color: #666;
+  padding: 20px;
+}
