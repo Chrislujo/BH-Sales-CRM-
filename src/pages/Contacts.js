@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Contacts.css";
 import ContactForm from "../components/ContactForm";
 import ConfirmationModal from "../components/ConfirmationModal";
 import ActivityLog from "../components/ActivityLog";
 import TaskForm from "../components/TaskForm";
 
+const API_URL = "http://localhost:5001/api/contacts";
+
 const Contacts = ({
-  contacts,
   setContacts,
+  contacts,
   tasks,
   setTasks,
   activities,
@@ -15,6 +17,7 @@ const Contacts = ({
   onAddContact,
   onAddTask,
   onAddActivity,
+  organizations = [],
 }) => {
   const [selectedContact, setSelectedContact] = useState(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -26,32 +29,90 @@ const Contacts = ({
   const [filterType, setFilterType] = useState("");
   const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
   const [isActivityFormOpen, setIsActivityFormOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleCreateContact = (formData) => {
-    // For now, we'll just log the data
-    console.log("New Contact:", formData);
-    // Here you would typically make an API call to save the contact
+  useEffect(() => {
+    fetchContacts();
+  }, []);
 
-    // Create a new contact object with an ID
-    const newContact = {
-      id: contacts.length + 1,
-      ...formData,
-      lastContact: new Date().toISOString().split("T")[0],
-    };
-
-    // Update the contacts list
-    setContacts([...contacts, newContact]);
-    setIsCreateModalOpen(false);
+  const fetchContacts = async () => {
+    try {
+      const response = await fetch(API_URL);
+      if (!response.ok) throw new Error("Failed to fetch contacts");
+      const data = await response.json();
+      setContacts(data);
+      setIsLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setIsLoading(false);
+    }
   };
 
-  const handleEditContact = (updatedContact) => {
-    const updatedContacts = contacts.map((contact) =>
-      contact.id === updatedContact.id ? updatedContact : contact
+  const handleCreateContact = (contactData) => {
+    // Make sure we have a valid organizationId
+    if (!contactData.organizationId) {
+      alert("Please select an organization");
+      return;
+    }
+
+    // Create a new contact with proper ID and timestamp
+    const newContact = {
+      ...contactData,
+      id: Date.now(),
+      createdAt: new Date().toISOString(),
+      lastContact: new Date().toISOString(),
+    };
+
+    // Add to contacts array
+    setContacts([...contacts, newContact]);
+
+    // If there's an onAddContact callback, call it
+    if (onAddContact) {
+      onAddContact(newContact);
+    }
+
+    // Close the modal
+    setIsCreateModalOpen(false);
+
+    // Log activity if needed
+    const organization = organizations.find(
+      (org) => org.id.toString() === contactData.organizationId.toString()
     );
-    setContacts(updatedContacts);
-    setSelectedContact(updatedContact);
-    setIsEditModalOpen(false);
-    setEditingContact(null);
+
+    if (onAddActivity) {
+      onAddActivity({
+        id: Date.now(),
+        type: "NOTE",
+        description: `Created new contact: ${contactData.name} at ${
+          organization?.name || "Unknown Organization"
+        }`,
+        timestamp: new Date().toISOString(),
+      });
+    }
+  };
+
+  const handleEditContact = async (updatedContact) => {
+    try {
+      const response = await fetch(`${API_URL}/${updatedContact.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedContact),
+      });
+
+      if (!response.ok) throw new Error("Failed to update contact");
+      const updated = await response.json();
+      setContacts((prev) =>
+        prev.map((contact) => (contact.id === updated.id ? updated : contact))
+      );
+      setSelectedContact(updated);
+      setIsEditModalOpen(false);
+      setEditingContact(null);
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   const handleDeleteClick = (contact) => {
@@ -59,20 +120,37 @@ const Contacts = ({
     setIsDeleteModalOpen(true);
   };
 
-  const handleDeleteConfirm = () => {
-    const updatedContacts = contacts.filter(
-      (contact) => contact.id !== contactToDelete.id
+  const handleDeleteConfirm = async () => {
+    try {
+      const response = await fetch(`${API_URL}/${contactToDelete.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) throw new Error("Failed to delete contact");
+      setContacts((prev) =>
+        prev.filter((contact) => contact.id !== contactToDelete.id)
+      );
+      setSelectedContact(null);
+      setIsDeleteModalOpen(false);
+      setContactToDelete(null);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const getOrganizationName = (organizationId) => {
+    const org = organizations.find(
+      (org) => org.id.toString() === organizationId?.toString()
     );
-    setContacts(updatedContacts);
-    setSelectedContact(null);
-    setIsDeleteModalOpen(false);
-    setContactToDelete(null);
+    return org ? org.name : "Unknown Organization";
   };
 
   const filteredContacts = contacts.filter((contact) => {
     const matchesSearch =
       contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contact.organization.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      getOrganizationName(contact.organizationId)
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
       contact.email?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesFilter = filterType ? contact.type === filterType : true;
@@ -225,7 +303,7 @@ const Contacts = ({
                   </div>
                   <div className="contact-list-info">
                     <h3>{contact.name}</h3>
-                    <p>{contact.organization}</p>
+                    <p>{getOrganizationName(contact.organizationId)}</p>
                     <span className="contact-type">{contact.type}</span>
                   </div>
                 </div>
@@ -251,7 +329,7 @@ const Contacts = ({
                 </div>
                 <div className="contact-details-info">
                   <h2>{selectedContact.name}</h2>
-                  <p>{selectedContact.organization}</p>
+                  <p>{getOrganizationName(selectedContact.organizationId)}</p>
                   <span className="contact-type">{selectedContact.type}</span>
                 </div>
                 <button
@@ -397,6 +475,7 @@ const Contacts = ({
         <ContactForm
           onSubmit={handleCreateContact}
           onClose={() => setIsCreateModalOpen(false)}
+          organizations={organizations}
         />
       )}
 
@@ -409,6 +488,7 @@ const Contacts = ({
             setIsEditModalOpen(false);
             setEditingContact(null);
           }}
+          organizations={organizations}
         />
       )}
 

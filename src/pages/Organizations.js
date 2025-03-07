@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Organizations.css";
 import OrganizationForm from "../components/OrganizationForm";
+import { Link } from "react-router-dom";
 
 const MOCK_ORGANIZATIONS = [
   {
@@ -27,8 +28,12 @@ const MOCK_ORGANIZATIONS = [
   },
 ];
 
-const Organizations = () => {
-  const [organizations, setOrganizations] = useState(MOCK_ORGANIZATIONS);
+const Organizations = ({
+  organizations = [],
+  setOrganizations,
+  contacts = [],
+  onAddOrganization,
+}) => {
   const [selectedOrg, setSelectedOrg] = useState(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -37,14 +42,22 @@ const Organizations = () => {
   const filteredOrgs = organizations.filter((org) => {
     const matchesSearch =
       org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      org.city.toLowerCase().includes(searchTerm.toLowerCase());
+      org.city?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter = filterType ? org.type === filterType : true;
     return matchesSearch && matchesFilter;
   });
 
   const handleCreateOrg = (newOrg) => {
-    setOrganizations([...organizations, { ...newOrg, id: Date.now() }]);
+    const orgWithId = { ...newOrg, id: Date.now() };
+    setOrganizations([...organizations, orgWithId]);
     setIsCreateModalOpen(false);
+  };
+
+  // Get contacts associated with the selected organization
+  const getAssociatedContacts = (orgId) => {
+    return contacts.filter(
+      (contact) => contact.organizationId?.toString() === orgId?.toString()
+    );
   };
 
   return (
@@ -153,8 +166,36 @@ const Organizations = () => {
 
                 <div className="org-contacts-section">
                   <h3>Associated Contacts</h3>
-                  {/* We'll implement this in the next step */}
-                  <p className="no-data">No contacts associated yet</p>
+                  <div className="associated-contacts">
+                    {getAssociatedContacts(selectedOrg.id).length > 0 ? (
+                      <div className="contacts-list">
+                        {getAssociatedContacts(selectedOrg.id).map(
+                          (contact) => (
+                            <div key={contact.id} className="contact-item">
+                              <div className="contact-avatar">
+                                {contact.name
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")}
+                              </div>
+                              <div className="contact-info">
+                                <h4>{contact.name}</h4>
+                                <p>{contact.type}</p>
+                              </div>
+                              <Link to="/contacts" className="view-contact-btn">
+                                View
+                              </Link>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    ) : (
+                      <p className="no-data">No contacts associated yet</p>
+                    )}
+                    <Link to="/contacts" className="add-contact-btn">
+                      + Add Contact
+                    </Link>
+                  </div>
                 </div>
               </div>
             </>

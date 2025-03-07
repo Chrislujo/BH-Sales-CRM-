@@ -438,3 +438,31 @@
   gap: 10px;
   margin-top: 20px;
 }
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 1.2em;
+  color: #666;
+}
+
+.error-message {
+  background: #fff3cd;
+  color: #856404;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.error-message button {
+  background: none;
+  border: none;
+  color: #856404;
+  cursor: pointer;
+  font-weight: bold;
+}

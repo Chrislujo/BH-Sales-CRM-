@@ -14,6 +14,7 @@ const App = () => {
   const [contacts, setContacts] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [activities, setActivities] = useState([]);
+  const [organizations, setOrganizations] = useState([]);
 
   // Handlers for updating shared state
   const handleAddContact = (newContact) => {
@@ -26,6 +27,10 @@ const App = () => {
 
   const handleAddActivity = (newActivity) => {
     setActivities([...activities, newActivity]);
+  };
+
+  const handleAddOrganization = (newOrganization) => {
+    setOrganizations([...organizations, newOrganization]);
   };
 
   return (
@@ -43,6 +48,7 @@ const App = () => {
                     contacts={contacts}
                     tasks={tasks}
                     activities={activities}
+                    organizations={organizations}
                   />
                 }
               />
@@ -59,6 +65,7 @@ const App = () => {
                     onAddContact={handleAddContact}
                     onAddTask={handleAddTask}
                     onAddActivity={handleAddActivity}
+                    organizations={organizations}
                   />
                 }
               />
@@ -72,7 +79,17 @@ const App = () => {
                   />
                 }
               />
-              <Route path="/organizations" element={<Organizations />} />
+              <Route
+                path="/organizations"
+                element={
+                  <Organizations
+                    organizations={organizations}
+                    setOrganizations={setOrganizations}
+                    contacts={contacts}
+                    onAddOrganization={handleAddOrganization}
+                  />
+                }
+              />
               <Route
                 path="/calendar"
                 element={<Calendar tasks={tasks} activities={activities} />}

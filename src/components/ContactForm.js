@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "./ContactForm.css";
 
-const ContactForm = ({ onSubmit, onClose, initialData, mode = "create" }) => {
+const ContactForm = ({
+  onSubmit,
+  onClose,
+  initialData,
+  mode = "create",
+  organizations = [],
+}) => {
   const [formData, setFormData] = useState({
     name: "",
-    organization: "",
+    organizationId: "",
     type: "",
     phone: "",
     email: "",
@@ -27,8 +33,26 @@ const ContactForm = ({ onSubmit, onClose, initialData, mode = "create" }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("Submitting contact form with data:", formData);
+
+    // Validate required fields
+    if (!formData.name) {
+      alert("Name is required");
+      return;
+    }
+
+    if (!formData.organizationId) {
+      alert("Organization is required");
+      return;
+    }
+
     onSubmit(formData);
   };
+
+  // Find the organization name for display
+  const selectedOrganization = organizations.find(
+    (org) => org.id.toString() === formData.organizationId?.toString()
+  );
 
   return (
     <div className="modal-overlay">
@@ -39,42 +63,46 @@ const ContactForm = ({ onSubmit, onClose, initialData, mode = "create" }) => {
             ×
           </button>
         </div>
-
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">Name *</label>
             <input
-              type="text"
               id="name"
               name="name"
+              type="text"
+              required
               value={formData.name}
               onChange={handleChange}
-              required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="organization">Organization *</label>
-            <input
-              type="text"
-              id="organization"
-              name="organization"
-              value={formData.organization}
+            <label htmlFor="organizationId">Organization *</label>
+            <select
+              id="organizationId"
+              name="organizationId"
+              required
+              value={formData.organizationId}
               onChange={handleChange}
-              required
-            />
+            >
+              <option value="">Select an organization</option>
+              {organizations.map((org) => (
+                <option key={org.id} value={org.id}>
+                  {org.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="form-group">
-            <label htmlFor="type">Contact Type *</label>
+            <label htmlFor="type">Contact Type</label>
             <select
               id="type"
               name="type"
               value={formData.type}
               onChange={handleChange}
-              required
             >
-              <option value="">Select Type</option>
+              <option value="">Select type</option>
               <option value="Wound Care">Wound Care</option>
               <option value="PCP">PCP</option>
               <option value="Pain Management">Pain Management</option>
@@ -83,23 +111,22 @@ const ContactForm = ({ onSubmit, onClose, initialData, mode = "create" }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="phone">Phone Number</label>
+            <label htmlFor="phone">Phone</label>
             <input
-              type="tel"
               id="phone"
               name="phone"
+              type="tel"
               value={formData.phone}
               onChange={handleChange}
-              placeholder="(555) 555-5555"
             />
           </div>
 
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
-              type="email"
               id="email"
               name="email"
+              type="email"
               value={formData.email}
               onChange={handleChange}
             />
